@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.equipmentwork.dao.ReservationMapper">
+    <resultMap id="reservationMap" type="com.equipmentwork.entity.Reservation"> <!--resultMap 是Mybatis的标签，用于定义查询结果的映射关系(ORM映射)-->
+        <id property="id" column="id"/> <!--id 是Mybatis的标签，用于定义主键字段,property表示类的属性，column表示映射的表的列名-->
+        <result property="equipmentId" column="equipment_id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+
+    </resultMap>
+
+    <!-- 插入预订信息 -->
+    <insert id="insert" parameterType="com.equipmentwork.entity.Reservation">
+        INSERT INTO reservation
+            (equipment_id, member_id, start_time, end_time)
+        VALUES
+            (#{equipmentId}, #{memberId}, #{startTime}, #{endTime})
+    </insert>
+
+    <!-- 根据ID删除预订信息 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM reservation WHERE id = #{id}
+    </delete>
+
+    <!-- 查询所有预订信息 -->
+    <select id="findAll" resultMap="reservationMap">
+        SELECT * FROM reservation
+    </select>
+
+    <!-- 分页查询预订信息 -->
+    <select id="findByPage" resultMap="reservationMap">
+        SELECT * FROM reservation
+        LIMIT #{start}, #{size}
+    </select>
+    <!-- 统计预约量 -->
+    <select id="countByEquipmentId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM reservation WHERE equipment_id = #{equipmentId}
+    </select>
+
+
+</mapper>

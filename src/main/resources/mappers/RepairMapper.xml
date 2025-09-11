@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!--namespace：命名空间，对应一个dao接口 -->
+<mapper namespace="com.equipmentwork.dao.RepairMapper">
+    <resultMap id="RepairMapper" type="com.equipmentwork.entity.Repair">
+
+        <id property="id" column="id"/><!--id：主键映射 -->
+        <result property="equipment_id" column="equipment_id"/>
+        <result property="reporter_id" column="reporter_id"/>
+        <result property="problem" column="problem"/>
+        <result property="report_time" column="report_time"/><!-- 新增最后修改日期字段 -->
+    </resultMap>
+
+    <insert id="addRepair" parameterType="com.equipmentwork.entity.Repair">
+        insert into repair (equipment_id, reporter_id, problem, report_time)
+        values (#{equipment_id}, #{reporter_id}, #{problem}, CURRENT_TIMESTAMP)
+    </insert>
+    <select id="getAllRepair" resultMap="RepairMapper"><!-- 查询所有报修记录 -->
+        select  repair.*,equipment.status
+        from repair
+         join equipment on repair.equipment_id=equipment.id
+    </select>
+
+    <delete id="deleteRepair" parameterType="long"><!-- 删除报修记录 -->
+        delete from repair where id = #{id}
+    </delete>
+
+    <update id="updateRepair" parameterType="com.equipmentwork.entity.Repair"><!-- 更新报修记录 -->
+        update repair set id=#{id},equipment_id=#{equipment_id}, reporter_id=#{reporter_id}, problem=#{problem}, report_time=CURRENT_TIMESTAMP where id=#{id}
+    </update>
+
+
+    <select id="getRepairByPage" resultMap="RepairMapper">
+        SELECT repair.*, equipment.status
+        FROM repair
+        JOIN equipment ON repair.equipment_id = equipment.id limit #{page},#{pageSize}
+    </select>
+
+    <select id="countByEquipmentId" resultType="java.lang.Integer">
+        select count(*) from repair where equipment_id=#{id}
+    </select>
+
+</mapper>

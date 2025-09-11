@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace：命名空间，对应一个dao接口 -->
+<mapper namespace="com.equipmentwork.dao.MaintenanceMapper">
+    <resultMap id="MaintenanceMapper" type="com.equipmentwork.entity.Maintenance">
+        <id column="id" property="id" />
+        <result property="equipment_id" column="equipment_id"/>
+        <result property="maintenance_date" column="maintenance_date"/>
+        <result property="cost" column="cost"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="getAllMaintenance" resultMap="MaintenanceMapper">
+        select * from maintenance
+    </select>
+    <insert id="addMaintenance" parameterType="com.equipmentwork.entity.Maintenance">
+        insert into maintenance(equipment_id,maintenance_date,cost,description) values(#{equipment_id},CURRENT_DATE,#{cost},#{description})
+    </insert>
+    <delete id="deleteMaintenance" parameterType="long">
+        delete from maintenance where id=#{id}
+    </delete>
+    <update id="updateMaintenance" parameterType="com.equipmentwork.entity.Maintenance">
+        update maintenance set equipment_id=#{equipment_id},cost=#{cost},description=#{description} where id=#{id}
+    </update>
+    <select id="getMaintenanceByPage" resultMap="MaintenanceMapper">
+        select * from maintenance limit #{page},#{pageSize}
+    </select>
+
+</mapper>

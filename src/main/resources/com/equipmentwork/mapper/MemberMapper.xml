@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.equipmentwork.mapper.MemberMapper">
+
+    <!-- 分页查询 -->
+    <select id="list" resultType="com.equipmentwork.entity.Member">
+        select * from member m
+        <where>
+            <if test="name!=null and name!=''">
+                m.name like concat('%',#{name},'%') #拼接字符串
+            </if>
+            <if test="gender != null and gender != ''">
+                and m.gender = #{gender}
+            </if>
+            <if test="age != 0">
+                and m.age = #{age}
+            </if>
+        </where>
+    </select>
+</mapper>

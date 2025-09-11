@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.equipmentwork.dao.PostsMapper">
+    <resultMap id="PostsMapper" type="com.equipmentwork.entity.Posts">
+
+        <id property="id" column="id"/><!--id：主键映射 -->
+        <result property="memberId" column="member_id"/>
+        <result property="content" column="content"/>
+        <result property="postTime" column="post_time"/>
+        <result property="lastUpdated" column="last_updated"/><!-- 新增最后修改日期字段 -->
+    </resultMap>
+    <!-- 插入帖子，仅插入member_id和content，post_time和last_updated使用默认值 -->
+    <insert id="insert" parameterType="com.equipmentwork.entity.Posts">
+        INSERT INTO Posts (member_id, content)
+        VALUES (#{memberId}, #{content})
+    </insert>
+
+    <!-- 删除帖子，根据id -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM Posts WHERE id = #{id}
+    </delete>
+
+    <!-- 查询所有帖子 -->
+    <select id="findAll" resultMap="PostsMapper">
+        SELECT id, member_id, content, post_time, last_updated
+        FROM Posts
+        ORDER BY post_time DESC
+    </select>
+
+    <!-- 分页查询帖子 -->
+    <select id="findByPage" resultMap="PostsMapper">
+        SELECT id, member_id, content, post_time, last_updated
+        FROM Posts
+        ORDER BY post_time DESC
+            LIMIT #{size} OFFSET #{start}
+    </select>
+    <!-- 更新帖子，仅更新content，last_updated自动更新 -->
+    <update id="update" parameterType="com.equipmentwork.entity.Posts">
+        UPDATE Posts
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+    <!-- 模糊查询帖子，根据content -->
+    <select id="searchPosts" parameterType="string" resultMap="PostsMapper">
+        SELECT id, member_id, content, post_time, last_updated
+        FROM Posts
+        WHERE content LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY post_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.equipmentwork.dao.StaffMapper">
+    <resultMap id="staffMap" type="com.equipmentwork.entity.Staff"> <!--resultMap 是Mybatis的标签，用于定义查询结果的映射关系(ORM映射)-->
+        <id property="id" column="id"/> <!--id 是Mybatis的标签，用于定义主键字段,property表示类的属性，column表示映射的表的列名-->
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="age" column="age"/>
+        <result property="role" column="role"/>
+        <result property="password" column="password"/>
+    </resultMap>
+    <!-- 插入员工信息 -->
+    <insert id="insert" parameterType="com.equipmentwork.entity.Staff">
+        INSERT INTO staff
+            (name, gender, age, role,password)
+        VALUES
+            (#{name}, #{gender}, #{age}, #{role},#{password})
+    </insert>
+
+    <!-- 根据ID删除员工信息 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM staff WHERE id = #{id}
+    </delete>
+
+    <!-- 更新员工信息 -->
+    <update id="update" parameterType="com.equipmentwork.entity.Staff">
+        UPDATE staff
+        SET name = #{name},
+            gender = #{gender},
+            age = #{age},
+            role = #{role},
+            password=#{password}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 查询所有员工信息 -->
+    <select id="findAll" resultMap="staffMap">
+        SELECT * FROM staff
+    </select>
+
+    <!-- 分页查询员工信息 -->
+    <select id="findByPage" resultMap="staffMap">
+        SELECT * FROM staff
+        LIMIT #{start}, #{size}
+    </select>
+
+    <!-- 根据关键词模糊查询员工信息 -->
+    <select id="findByKeyword" resultMap="staffMap">
+        SELECT * FROM staff
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+           OR role LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <select id="chachMember" resultMap="staffMap">
+            SELECT * FROM staff WHERE name=#{name} AND password=#{password}
+    </select>
+</mapper>

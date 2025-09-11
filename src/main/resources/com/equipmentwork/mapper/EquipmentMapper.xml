@@ -1,0 +1,22 @@
+<!--定义Mapper映射文件的约束和基本结构-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.equipmentwork.mapper.EquipmentMapper">
+
+
+    <select id="list" resultType="com.equipmentwork.entity.Equipment">
+        select e.* from equipment e
+        <where>
+            <if test="name!=null and name!=''">
+                e.name like concat('%',#{name},'%') #拼接字符串
+            </if>
+            <if test="brand!=null and brand!=''">
+               and e.brand like concat('%',#{brand},'%') #拼接字符串
+            </if>
+            <if test="status!=null and status!=''">
+               and e.status like concat('%',#{status},'%') #拼接字符串
+            </if>
+        </where>
+    </select>
+</mapper>
