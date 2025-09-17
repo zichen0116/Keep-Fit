@@ -49,6 +49,18 @@ langchain4j:
       model-name: qwen3-30b-a3b-instruct-2507
       log-requests: true
       log-responses: true
+    embedding-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: sk-a34f4673bb97497985af69349ccd1574
+      model-name: text-embedding-v3
+      log-requests: true
+      log-responses: true
+      max-segments-per-batch: 10
+  
+  community:
+    redis:
+      host: localhost
+      port: 6379
 logging:
   level:
     dev.langchain4j: DEBUG

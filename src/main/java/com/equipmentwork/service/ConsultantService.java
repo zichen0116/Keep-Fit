@@ -12,9 +12,11 @@ import reactor.core.publisher.Flux;
 
 @AiService(
         wiringMode = AiServiceWiringMode.EXPLICIT,// 手动装配
-        chatModel = "openAiChatModel",
-        streamingChatModel = "openAiStreamingChatModel",
-        chatMemoryProvider = "chatMemoryProvider"
+        chatModel = "openAiChatModel", // 配置模型
+        streamingChatModel = "openAiStreamingChatModel",// 配置流式模型
+        chatMemoryProvider = "chatMemoryProvider",// 配置会话记忆对象
+        contentRetriever = "contentRetriever", //配置向量数据库检索对象
+        tools = "reservationTool"
 )
 public interface ConsultantService {
     @SystemMessage(fromResource = "system.txt")
