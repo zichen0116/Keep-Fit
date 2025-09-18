@@ -86,14 +86,13 @@ public class MemberController {
     public Result login(@RequestParam("name") String
                                 name,@RequestParam("password") String password) {
         log.info("登录操作：{}-{}", name, password);
-        Member member = memberService.login(name, password);  // Corrected to include both name and password arguments
         try {
+            Member member = memberService.login(name, password);
             if(member !=null) return Result.success(member);
             else return Result.error("登录失败");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return Result.error(e.getMessage());
         }
-
     }
 
 }
