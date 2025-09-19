@@ -88,8 +88,11 @@ public class MemberController {
         log.info("登录操作：{}-{}", name, password);
         try {
             Member member = memberService.login(name, password);
-            if(member !=null) return Result.success(member);
-            else return Result.error("登录失败");
+            if(member !=null) {
+                return Result.success(member);
+            } else {
+                return Result.error("登录失败");
+            }
         } catch (Exception e) {
             return Result.error(e.getMessage());
         }
